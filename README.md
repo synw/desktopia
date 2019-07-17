@@ -11,4 +11,3 @@ Flutter widgets and components for desktop
 ## Components
 
 - Config manager: load and save config files
-- Screen zones: experimental implementation to refresh screen zones
