@@ -19,7 +19,8 @@ class ConfigManager {
   /// The app name
   final String app;
 
-  Map<String, dynamic> _data = <String, dynamic>{};
+  /// The config data
+  Map<String, dynamic> data = <String, dynamic>{};
   File _file;
   Directory _homeDir;
   Directory _appConfigDir;
@@ -44,13 +45,14 @@ class ConfigManager {
     }
     _file = f;
   }
-/*
-  dynamic _key(String value) {
-    for (final k in _data.keys) {
-      if (k == value) return _data[value];
+
+  /// get a config value
+  dynamic key(String value) {
+    for (final k in data.keys) {
+      if (k == value) return data[value];
     }
     return null;
-  }*/
+  }
 
   /// Read config file
   Map<String, dynamic> read() {
@@ -66,7 +68,7 @@ class ConfigManager {
       _rawFileData.forEach((String k, dynamic v) {
         _fileData[k.toString()] = v;
       });
-      _data = _fileData;
+      data = _fileData;
     } catch (e) {
       throw ("Can not process config file $e");
     }
@@ -76,10 +78,10 @@ class ConfigManager {
   /// Write config file
   void write([Map<String, dynamic> jsonData]) {
     assert(_file != null);
-    jsonData ??= _data;
+    jsonData ??= data;
     final content = json.encode(jsonData);
     _file.writeAsStringSync(content);
-    _data = jsonData;
+    data = jsonData;
   }
 
   void _setAppConfigDirectory() {
