@@ -7,23 +7,36 @@ class _MenuBarState extends State<MenuBar> {
   final MenuBarData menu;
   final double height;
 
+  bool _isSubMenuActive = false;
+
   List<Widget> buildMenu() {
-    var wl = <Widget>[];
+    final wl = <Widget>[];
     for (final MenuItem menuItem in menu.menuItems) {
       wl.add(Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
                   child: Text("${menuItem.title}",
                       style: TextStyle(color: Colors.black)),
-                  onTap: () => menuItem.action(),
+                  onTap: () {
+                    if (menuItem.subMenu == null) {
+                      menuItem.action();
+                    } else {
+                      setState(() => _isSubMenuActive = !_isSubMenuActive);
+                    }
+                  },
                 ),
-                /*if (menuItem.actionMenu != null)
-              Stack(
-                children: <Widget>[],
-              )*/
+                if (menuItem.subMenu != null)
+                  _isSubMenuActive
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: GestureDetector(
+                            child: Text(menuItem.title),
+                            onTap: () => menuItem.action,
+                          ))
+                      : const Text("")
               ])));
     }
     return wl;
@@ -41,9 +54,12 @@ class _MenuBarState extends State<MenuBar> {
   }
 }
 
+/// A top menu bar
 class MenuBar extends StatefulWidget {
+  /// Default contructor
   MenuBar(this.menu);
 
+  /// The menu data
   final MenuBarData menu;
 
   @override
