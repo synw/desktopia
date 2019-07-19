@@ -2,7 +2,7 @@ name: desktopia
 author: synw <ansterj@gmail.com>
 description: A set of desktop widgets and components for Flutter. Includes a configuration manager.
 homepage: https://github.com/synw/desktopia
-version: 0.1.0
+version: 0.1.1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
