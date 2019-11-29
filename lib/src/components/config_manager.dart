@@ -8,7 +8,7 @@ class ConfigManager {
   /// detect the home directory from environnement variables
   /// and create a .appname folder. If no home directory is
   /// found it will use the current directory
-  ConfigManager({this.app, this.location}) {
+  ConfigManager({this.app, this.location, this.verbose = false}) {
     _file = File(location);
     if (_file.existsSync() == false) throw ("File $location does not exist");
   }
@@ -18,6 +18,9 @@ class ConfigManager {
 
   /// The app name
   final String app;
+
+  /// The verbosity level
+  final bool verbose;
 
   /// The config data
   Map<String, dynamic> data = <String, dynamic>{};
@@ -32,17 +35,24 @@ class ConfigManager {
   Directory get appConfigDir => _appConfigDir;
 
   /// Auto configure the config location
-  ConfigManager.auto(String appName)
+  ConfigManager.auto(String appName, {bool verbose = false})
       : this.app = appName,
-        this.location = null {
+        this.location = null,
+        this.verbose = verbose {
+    if (verbose) {
+      print("Running autoconfig");
+    }
     _setAppConfigDirectory();
     // set config file
     final filePath = "${_appConfigDir.path}/config.json";
     final f = File(filePath);
     if (!f.existsSync()) {
-      print("Creating config file ${f.path} for app $app");
+      if (verbose) {
+        print("Creating config file ${f.path} for app $app");
+      }
       f.createSync();
     }
+    print("Autoconfiguration completed with file ${f.path}");
     _file = f;
   }
 
@@ -57,6 +67,9 @@ class ConfigManager {
   /// Read config file
   Map<String, dynamic> read() {
     assert(_file != null);
+    if (verbose) {
+      print("Reading config file ${_file.path}");
+    }
     final _fileData = <String, dynamic>{};
     try {
       final content = _file.readAsStringSync();
@@ -72,6 +85,10 @@ class ConfigManager {
     } catch (e) {
       throw ("Can not process config file $e");
     }
+    if (verbose) {
+      print("Config file data:");
+      print("$_fileData");
+    }
     return _fileData;
   }
 
@@ -79,23 +96,48 @@ class ConfigManager {
   void write([Map<String, dynamic> jsonData]) {
     assert(_file != null);
     jsonData ??= data;
+    if (verbose) {
+      print("Writing data to config file:");
+      print("$data");
+    }
     final content = json.encode(jsonData);
     _file.writeAsStringSync(content);
     data = jsonData;
   }
 
   void _setAppConfigDirectory() {
-    if (_homeDir == null) _setHomeDir();
+    if (verbose) {
+      print("Setting up app config");
+    }
+    if (_homeDir == null) {
+      if (verbose) {
+        print("Home directory not found");
+      }
+      _setHomeDir();
+    }
     final dir = Directory("${_homeDir.path}/.$app");
     if (!dir.existsSync()) {
-      print("Creating configuration directory ${dir.path} for app $app");
+      if (verbose) {
+        print("Creating configuration directory ${dir.path} for app $app");
+      }
       dir.createSync();
+    }
+    if (verbose) {
+      print("Setting up config dir: $dir");
     }
     _appConfigDir = dir;
   }
 
   void _setHomeDir() {
-    if (_homeDir != null) return null;
+    if (verbose) {
+      print("Setting up home directory");
+    }
+    if (_homeDir != null) {
+      if (verbose) {
+        print("Home directory already exists: $homeDir");
+      }
+      return null;
+    }
     String path;
     bool found = false;
     final Map<String, String> envs = Platform.environment;
@@ -103,7 +145,13 @@ class ConfigManager {
       path = envs["HOME"];
       found = true;
     }
-    if (!found) throw ("Home directory not found");
+    if (!found) {
+      throw ("Home directory not found");
+    } else {
+      if (verbose) {
+        print("Found home directory at $path");
+      }
+    }
     _homeDir = Directory(path);
   }
 }
