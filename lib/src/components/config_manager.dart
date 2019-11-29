@@ -10,7 +10,9 @@ class ConfigManager {
   /// found it will use the current directory
   ConfigManager({this.app, this.location, this.verbose = false}) {
     _file = File(location);
-    if (_file.existsSync() == false) throw ("File $location does not exist");
+    if (_file.existsSync() == false) {
+      throw ("File $location does not exist");
+    }
   }
 
   /// The configuration file location

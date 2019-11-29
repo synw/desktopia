@@ -11,7 +11,7 @@ class _KeyboardEventsState extends State<KeyboardEvents> {
   final _focusNode = FocusNode();
 
   void _handleKeyEvent(RawKeyEvent event) {
-    final kid = event.logicalKey.keyId;
+    //final kid = event.logicalKey.keyId;
     //final key = LogicalKeyboardKey.findKeyByKeyId(kid);
     //print("KEY ${key.runtimeType} $key");
     //print("KEY EVENT: $key");

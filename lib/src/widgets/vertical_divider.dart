@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// A vertical divider
 class DesktopVerticalDivider extends StatelessWidget {
   /// The default color is grey
-  DesktopVerticalDivider(
+  const DesktopVerticalDivider(
       {this.width = 3.0, this.color = const Color(0xffcecece)});
 
   /// The width of the divider

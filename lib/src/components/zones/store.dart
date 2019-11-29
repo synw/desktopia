@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'models.dart';
 import 'state.dart';
 
-final appZoneState = AppZoneState();
+final AppZoneState appZoneState = AppZoneState();
 
 final _appZoneStateUpdateController = StreamController<AppZoneStore>();
 
@@ -25,11 +27,11 @@ class AppZoneStore {
   void init(List<AppZone> zones) {
     assert(zones != null);
     assert(zones.isNotEmpty);
-    print("init");
-    state.zones = zones;
-    //_readyCompleter.complete();
-    state.isReady = true;
-    print("ready");
+    print("Initializing app zones");
+    state
+      ..zones = zones
+      ..isReady = true;
+    print("Appzones initialized");
   }
 
   Widget widgetForZone(String name) {
@@ -47,8 +49,8 @@ class AppZoneStore {
   AppZoneStore.updateZone(AppZone zone, Widget widget) {
     assert(
         state.isReady,
-        "The app zones store is not ready: please run init() " +
-            "on the store before using it");
+        "The app zones store is not ready: please run init() "
+        "on the store before using it");
     final newZones = <AppZone>[];
     for (final z in state.zones) {
       if (z.name == zone.name) {
@@ -67,6 +69,7 @@ class AppZoneStore {
       }
     }
     assert(zone != null, "Did not find zone $name");
+    print("Updating zone $name");
     updateAppZone(zone, widget);
   }
 
