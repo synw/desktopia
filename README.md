@@ -109,7 +109,7 @@ In `zones/appzones.dart`:
    zones.init(appZones);
    ```
 
-#### Create the main page
+#### Create the main page
 
 Example of main page:
 
