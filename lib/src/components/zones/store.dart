@@ -5,25 +5,36 @@ import 'package:flutter/material.dart';
 import 'models.dart';
 import 'state.dart';
 
+/// The app zones state
+///
+/// Use this when you want to access the app zones
+/// state without a context
 final AppZoneState appZoneState = AppZoneState();
 
 final _appZoneStateUpdateController = StreamController<AppZoneStore>();
 
+/// The state updates stream
 Stream<AppZoneStore> appZoneStateStream = _appZoneStateUpdateController.stream;
 
+/// The function to update a zone with a new widget
 void updateAppZone(AppZone zone, Widget widget) =>
     _appZoneStateUpdateController.sink
         .add(AppZoneStore.updateZone(zone, widget));
 
+/// The store that manage state mutations
 class AppZoneStore {
+  /// Main constructor
   AppZoneStore();
 
-  final state = appZoneState;
+  /// The zones state
+  final AppZoneState state = appZoneState;
 
+  /// Is the store ready
+  ///
+  /// If not run [init] before using
   bool get isReady => state.isReady;
 
-  //Future get onReady => _readyCompleter.future;
-
+  /// Initialize the store: run this before using
   void init(List<AppZone> zones) {
     assert(zones != null);
     assert(zones.isNotEmpty);
@@ -34,6 +45,7 @@ class AppZoneStore {
     print("Appzones initialized");
   }
 
+  /// Access the current widget of a zone
   Widget widgetForZone(String name) {
     Widget w;
     for (final z in state.zones) {
@@ -46,6 +58,7 @@ class AppZoneStore {
     return w;
   }
 
+  /// The store update constructor
   AppZoneStore.updateZone(AppZone zone, Widget widget) {
     assert(
         state.isReady,
@@ -61,6 +74,7 @@ class AppZoneStore {
     state.zones = newZones;
   }
 
+  /// The main update function
   void update(String name, Widget widget) {
     AppZone zone;
     for (final z in state.zones) {
@@ -73,6 +87,7 @@ class AppZoneStore {
     updateAppZone(zone, widget);
   }
 
+  /// The stream of zones change
   static Stream<AppZoneStore> stream() {
     return _appZoneStateUpdateController.stream;
   }

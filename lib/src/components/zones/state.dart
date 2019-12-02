@@ -1,6 +1,10 @@
 import 'models.dart';
 
+/// The class that holds the zones state
 class AppZoneState {
-  var zones = <AppZone>[];
-  var isReady = false;
+  /// All the zones
+  List<AppZone> zones = <AppZone>[];
+
+  /// Ready indicator
+  bool isReady = false;
 }

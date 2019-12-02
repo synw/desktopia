@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// A section header for sidebars
 class DesktopSectionHeader extends StatelessWidget {
   /// Provide a title
-  DesktopSectionHeader(
+  const DesktopSectionHeader(
       {@required this.title,
       this.color = const Color(0xffcecece),
       this.borderTop = true});

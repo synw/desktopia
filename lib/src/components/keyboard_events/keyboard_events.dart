@@ -36,7 +36,7 @@ class _KeyboardEventsState extends State<KeyboardEvents> {
   Widget build(BuildContext context) {
     return RawKeyboardListener(
       focusNode: _focusNode,
-      onKey: (event) => _handleKeyEvent(event),
+      onKey: _handleKeyEvent,
       child: child,
     );
   }
@@ -49,7 +49,7 @@ class _KeyboardEventsState extends State<KeyboardEvents> {
 }
 
 class KeyboardEvents extends StatefulWidget {
-  KeyboardEvents({@required this.child, this.onCtrlEnter});
+  const KeyboardEvents({@required this.child, this.onCtrlEnter});
 
   final Widget child;
   final VoidCallback onCtrlEnter;

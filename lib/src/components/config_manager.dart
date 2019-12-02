@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
 /// Manage configuration files
 class ConfigManager {
@@ -11,7 +11,7 @@ class ConfigManager {
   ConfigManager({this.app, this.location, this.verbose = false}) {
     _file = File(location);
     if (_file.existsSync() == false) {
-      throw ("File $location does not exist");
+      throw FileSystemException("File $location does not exist");
     }
   }
 
@@ -37,10 +37,7 @@ class ConfigManager {
   Directory get appConfigDir => _appConfigDir;
 
   /// Auto configure the config location
-  ConfigManager.auto(String appName, {bool verbose = false})
-      : this.app = appName,
-        this.location = null,
-        this.verbose = verbose {
+  ConfigManager.auto(this.app, {this.verbose = false}) : this.location = null {
     if (verbose) {
       print("Running autoconfig");
     }
@@ -85,7 +82,7 @@ class ConfigManager {
       });
       data = _fileData;
     } catch (e) {
-      throw ("Can not process config file $e");
+      throw FileSystemException("Can not process config file $e");
     }
     if (verbose) {
       print("Config file data:");
@@ -138,17 +135,17 @@ class ConfigManager {
       if (verbose) {
         print("Home directory already exists: $homeDir");
       }
-      return null;
+      return;
     }
     String path;
-    bool found = false;
-    final Map<String, String> envs = Platform.environment;
+    var found = false;
+    final envs = Platform.environment;
     if (envs.containsKey("HOME")) {
       path = envs["HOME"];
       found = true;
     }
     if (!found) {
-      throw ("Home directory not found");
+      throw const FileSystemException("Home directory not found");
     } else {
       if (verbose) {
         print("Found home directory at $path");

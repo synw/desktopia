@@ -11,7 +11,7 @@ class _MenuBarState extends State<MenuBar> {
 
   List<Widget> buildMenu() {
     final wl = <Widget>[];
-    for (final MenuItem menuItem in menu.menuItems) {
+    for (final menuItem in menu.menuItems) {
       wl.add(Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
           child: Stack(
@@ -57,7 +57,7 @@ class _MenuBarState extends State<MenuBar> {
 /// A top menu bar
 class MenuBar extends StatefulWidget {
   /// Default contructor
-  MenuBar(this.menu);
+  const MenuBar(this.menu);
 
   /// The menu data
   final MenuBarData menu;
