@@ -111,7 +111,73 @@ In `zones/appzones.dart`:
 
 #### Create the main page
 
-The page that assembles all the zones: check an [example](https://github.com/synw/desktop_base/blob/master/lib/desktop.dart)
+Example of main page:
+
+   ```dart
+  @override
+  Widget build(BuildContext context) {
+    final zStore = Provider.of<AppZoneStore>(context);
+    return Scaffold(
+        body: _ready
+            ? Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        color: const Color(0xffcecece),
+                        child: Column(children: <Widget>[
+                          MenuBar(MenuBarData(menuItems: <MenuItem>[
+                            MenuItem(
+                                context: context,
+                                title: "About",
+                                action: () => aboutDialog(context)),
+                            MenuItem(
+                                context: context,
+                                title: "Quit",
+                                action: () => exit(0))
+                          ])),
+                          Container(
+                              height: 1.0,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.grey[400],
+                              child: const Text("")),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: zStore.widgetForZone("appBar"),
+                              ),
+                            ],
+                          ),
+                          Container(
+                              height: 1.0,
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.grey[400],
+                              child: const Text("")),
+                        ])),
+                    Expanded(
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                                flex: 2,
+                                child: SingleChildScrollView(
+                                    child: zStore.widgetForZone("sidebar"))),
+                            const DesktopVerticalDivider(),
+                            Expanded(
+                              flex: 8,
+                              child: SingleChildScrollView(
+                                  child: zStore.widgetForZone("main")),
+                            ),
+                          ]),
+                    ),
+                  ],
+                ))
+            : const Center(child: CircularProgressIndicator()));
+  }
+}
+   ```
 
 #### Update a zone
 
